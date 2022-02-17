@@ -1,0 +1,56 @@
+﻿@using WebApplication5.Models;
+@model Corrections;
+@{
+    ViewData["Title"] = "2602-3. Добавить новое замечание";
+}
+<link rel="stylesheet" href="~/css/AddNewRemark.css"/>
+<br><br>
+
+    <h3 class="header">Добавить новое замечание11</h3>
+
+
+    <form asp-controller="Home" asp-action="CreateRemark" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All"></div>
+            <div>Номер замечания: @ViewBag.NewId</div>
+            <input type="hidden" asp-for="CorNumber" value=@ViewBag.NewId></input>
+
+            <br><br>
+            <div class="RemarkText">
+                <label class="RemarkText1" asp-for="CorBodyText">Текст замечания</label>
+                <textarea rows="3" cols="80" asp-for="CorBodyText"></textarea>
+                <span asp-validation-for="CorBodyText"></span>
+            </div>
+            <br><br>
+            <div class="editor-label">
+                Дата получения замечания:
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.CorTerm);
+                @Html.ValidationMessageFor(model => model.CorTerm)
+                <br><br>
+                <label asp-for="Executor">Исполнитель</label>
+                @Html.DropDownList("UserName", ViewData["Users"] as SelectList);
+                <br><br>
+                <label asp-for="ImageFile">Скриншот</label>
+                <input class="input-file" asp-for="ImageFile" accept="image/*"></input>
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+                <br><br>
+                <input type="submit" value="Создать новое замечание">
+    </form>
+
+
+
+
+    <style>
+        div.RemarkText {
+            height: 50px;
+            display: flex;
+            align-items: center
+        }
+    </style>
+</div>
+
+
+
+
