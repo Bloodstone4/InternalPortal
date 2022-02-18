@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication5.Models;
 
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220218042922_project")]
+    partial class project
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,8 +41,6 @@ namespace WebApplication5.Migrations
 
                     b.Property<string>("Project");
 
-                    b.Property<int?>("ProjectId");
-
                     b.Property<DateTime>("RecieveDate");
 
                     b.Property<int>("Status");
@@ -49,32 +49,7 @@ namespace WebApplication5.Migrations
 
                     b.HasIndex("ExecutorId");
 
-                    b.HasIndex("ProjectId");
-
                     b.ToTable("Cors");
-                });
-
-            modelBuilder.Entity("WebApplication5.Models.Project", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ContractNumber");
-
-                    b.Property<string>("FullName");
-
-                    b.Property<string>("InternalNum");
-
-                    b.Property<int?>("ManagerId");
-
-                    b.Property<string>("ShortName");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ManagerId");
-
-                    b.ToTable("ProjectSet");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.User", b =>
@@ -99,17 +74,6 @@ namespace WebApplication5.Migrations
                     b.HasOne("WebApplication5.Models.User", "Executor")
                         .WithMany()
                         .HasForeignKey("ExecutorId");
-
-                    b.HasOne("WebApplication5.Models.Project")
-                        .WithMany("Corrections")
-                        .HasForeignKey("ProjectId");
-                });
-
-            modelBuilder.Entity("WebApplication5.Models.Project", b =>
-                {
-                    b.HasOne("WebApplication5.Models.User", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId");
                 });
 #pragma warning restore 612, 618
         }

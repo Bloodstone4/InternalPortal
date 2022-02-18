@@ -1,0 +1,17 @@
+﻿.field-validation-error {
+    color: #4cff00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {border: 1px solid #f00; background-color: #f00}
+.input-validation-valid {
+    display: none
+}
+
+InternalNum.field-validation-error {
+    border: 1px solid #f00;
+    background-color: #f00
+}

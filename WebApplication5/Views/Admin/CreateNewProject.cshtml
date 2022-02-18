@@ -1,0 +1,21 @@
+﻿@model Project
+@{
+    ViewData["Title"] = "CreateNewProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/CreateNewProject.css">
+<br /><br />
+<h3 class="header1">Создать новый проект</h3>
+<br /><br />
+
+      <form asp-controller="Admin" asp-action="CreateNewProjectPost" method="post" enctype="multipart/form-data">
+          <div asp-validation-summary="All"></div>
+
+          <label class="RemarkText1" asp-for="InternalNum">Внутренний номер проекта</label>
+          <input type="text" asp-for="InternalNum">
+          <span asp-validation-for="InternalNum"></span>
+
+          <input type="submit" value="Создать новый проект">
+      </form>
+
