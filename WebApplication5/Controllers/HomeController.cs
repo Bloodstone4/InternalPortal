@@ -108,6 +108,7 @@ namespace WebApplication5.Controllers
             ViewBag.Statuses = selectListItems;
             var model= context.Cors.Single(x => x.Id == corId);
             return View(model);
+            
         }
 
        
