@@ -1,5 +1,7 @@
-﻿@model Project
+﻿
+@model Project
 @{
+    
     ViewData["Title"] = "CreateNewProject";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -43,12 +45,15 @@
         </tr>
 
         <tr>
-            <td width="250">
+            <td width="250">              
+               
+                    
+                </select>
                 <label class="ProjectNameLabel">Менеджер проекта</label>
             </td>
 
             <td width="500">
-                @Html.DropDownList("UserName", ViewData["Users"] as SelectList);
+                @Html.Partial("DropDownList", ViewData["Users"] as List<User>);
             </td>
         </tr>
     </table>

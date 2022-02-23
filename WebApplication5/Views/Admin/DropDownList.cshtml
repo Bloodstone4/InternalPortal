@@ -1,0 +1,10 @@
+﻿
+@model List<User>
+    <input list="my-list">
+    <datalist id="my-list">
+        @foreach (var user in Model)
+        {
+            <option>@user.FullName</option>
+
+        }
+</datalist>

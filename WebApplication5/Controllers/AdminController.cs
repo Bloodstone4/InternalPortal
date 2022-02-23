@@ -23,11 +23,15 @@ namespace WebApplication5.Controllers
             context = appDbContext;
         }
 
+        public IActionResult DropDownList()
+        {
+            return PartialView(context.Users);
+        }
 
         public IActionResult CreateNewProject()
         {
             
-            ViewData["Users"] = new SelectList(context.Users, "Id", "FullName");
+            ViewData["Users"] = context.Users.ToList();
             return View();
         }
 
@@ -46,5 +50,6 @@ namespace WebApplication5.Controllers
                 return View();
             }
         }
+
     }
 }
