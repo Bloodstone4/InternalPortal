@@ -1,15 +1,15 @@
 ﻿
 @model Project
 @{
-    
+
     ViewData["Title"] = "CreateNewProject";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="~/css/CreateNewProject1.css">
 
-<link rel="stylesheet" href="~/css/CreateNewProject.css">
 <br /><br />
 <h3 class="header1">Создать новый проект</h3>
-<br /><br />  
+<br /><br />
 
 <div asp-validation-summary="All"></div>
 <form asp-controller="Admin" asp-action="CreateNewProject" method="post" enctype="multipart/form-data">
@@ -21,7 +21,7 @@
         </tr>
         <tr>
             <td width="250">
-                <label class="ProjectNameLabel" >Наименование проекта</label>
+                <label class="ProjectNameLabel">Наименование проекта</label>
             </td>
 
             <td width="900">  <input type="text" class="FullName" asp-for="FullName" size="100"></td>
@@ -45,18 +45,28 @@
         </tr>
 
         <tr>
-            <td width="250">              
-               
-                    
+            <td width="250">
+
+
                 </select>
                 <label class="ProjectNameLabel">Менеджер проекта</label>
             </td>
 
             <td width="500">
-                @Html.Partial("DropDownList", ViewData["Users"] as List<User>);
+                
+                <input list="my-list" name="selectedUser">
+                <datalist id="my-list">
+                    @foreach (var user in ViewData["Users"] as List<User>)
+                    {
+                        <option>@user.FullName</option>
+                    }                
+                </datalist>
+             
+
             </td>
         </tr>
     </table>
+
     <input type="submit" value="Создать новый проект">
 </form>
 

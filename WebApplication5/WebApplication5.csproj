@@ -15,14 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Correction\ViewCorrections.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Home\NewPage1.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\PageNotFound.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Domain\" />
-    <Folder Include="Views\Correction\" />
   </ItemGroup>
 
 </Project>

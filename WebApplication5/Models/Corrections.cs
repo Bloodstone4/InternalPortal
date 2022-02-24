@@ -31,7 +31,7 @@ namespace WebApplication5.Models
         [Required(ErrorMessage ="Укажите, пож-та, скриншот")]
         public string ImageLink { get; set; }
         public User Executor { get; set; }
-        public string Project { get; set; }
+        public Project Project { get; set; }
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }

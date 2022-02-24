@@ -38,9 +38,13 @@ namespace WebApplication5.Controllers
         [HttpPost]
         public IActionResult CreateNewProject(Project project)
         {
-            ViewData["Users"] = new SelectList(context.Users, "Id", "FullName");
+            // var selUserStr = (string)selectedUser;
+            string selectedUser = Request.Form["selectedUser"].ToString();
+            ViewData["Users"] = context.Users.ToList();
             if (ModelState.IsValid)
             {
+                var user= context.Users.Where(x => x.FullName == selectedUser).First();
+                project.Manager = user;
                 context.ProjectSet.Add(project);
                 context.SaveChanges();
                 return View(@"~/Views/Home/Index.cshtml", context);
