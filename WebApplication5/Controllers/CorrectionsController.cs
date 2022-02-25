@@ -21,10 +21,17 @@ namespace WebApplication5.Controllers
 
         public IActionResult ViewCorrections(int? Id)
         {
+            ViewData["ActiveProject"] = context.ProjectSet.Where(x => x.Status == Status.InWork);
             if (Id.HasValue)
             {
                 var corSet=context.Cors.Where(x => x.Project.Id == Id);
-                return View(corSet);
+                if (corSet.Count() > 0)
+                {                  
+                    ViewData["Project"] = context.ProjectSet.Where(x => x.Id == Id).First();
+                    return View(corSet);
+                }
+                
+                return View("CorrectionsWereNotFound");
             }
             return View("PageNotFound");
         }

@@ -33,10 +33,10 @@
                 <ul class="nav navbar-nav">
                     <li><img src="~/images/logo-top.svg"></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Все проекты</a></li>
-                    <li></li>
-                    <li></li>
-                   
-                    <li> <a href="/Corrections/ViewCorrections/1">2602-3</a></li>
+                    @foreach (var proj in ViewData["ActiveProjects"] as IQueryable<Project>)
+                    {                       
+                        <li> <a href=@String.Format("/Corrections/ViewCorrections/{0}", proj.Id)>@proj.InternalNum</a></li>
+                    }
 
                     <li><a asp-area="" asp-controller="Home" asp-action="About">2603</a></li>
                     <li></li>

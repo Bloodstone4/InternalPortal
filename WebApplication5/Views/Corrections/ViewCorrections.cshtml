@@ -1,6 +1,7 @@
 ﻿
-@model AppDbContext
+@model IQueryable<Corrections>
 @{
+    Project project = ViewData["Project"] as Project;
     ViewData["Title"] = "2602-3 \"Завод масел\"";
     DateTime newDate = DateTime.Now.Date;
 
@@ -21,11 +22,11 @@
 
         }
         return "Не найдено";
-        
+
     }
 }
 <br>
-<h3>@String.Format("Замечания к 3D модели по проекту") </h3>
+<h3>@String.Format("Замечания к 3D модели по проекту {0} {1}", project.InternalNum, project.FullName) </h3>
 <br>
 <style>
    table[id="QualityBook"]{
@@ -54,7 +55,7 @@
         <th width="40%">Ответственный исполнитель</th>
     </tr>
     
- @foreach (var cor in Model.Cors)
+ @foreach (var cor in Model)
  {
      String path = String.Format("<img src=\"~\\images\\{0}\" />", cor.ImageLink);
     <tr>

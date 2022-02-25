@@ -30,7 +30,7 @@ namespace WebApplication5.Controllers
 
         public IActionResult CreateNewProject()
         {
-            
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.Status == Status.InWork);
             ViewData["Users"] = context.Users.ToList();
             return View();
         }

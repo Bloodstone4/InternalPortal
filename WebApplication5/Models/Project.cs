@@ -17,8 +17,11 @@ namespace WebApplication5.Models
         public string FullName { get; set; }
         public User Manager { get; set; }
         public List<Corrections> Corrections { get; set; }
-        public enum Status { Current, New }
+        public Status Status { get; set;}
 
+       
     }
-    
+
+    public enum Status
+    { NotInWork, InWork }
 }
