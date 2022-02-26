@@ -18,7 +18,7 @@ namespace WebApplication5.Models
         public User Manager { get; set; }
         public List<Corrections> Corrections { get; set; }
         public Status Status { get; set;}
-
+        public bool ShowInMenuBar { get; set; }
        
     }
 

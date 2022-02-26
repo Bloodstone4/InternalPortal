@@ -1,0 +1,82 @@
+﻿
+@model Corrections
+@{
+    Project project = ViewData["Project"] as Project;
+    ViewData["Title"] = "2602-3 \"Завод масел\"";
+    DateTime newDate = DateTime.Now.Date;
+
+    string GetStatus(Corrections.CorStatus status)
+    {
+        switch (status)
+        {
+            case Corrections.CorStatus.New:
+                return "Новая";
+            case Corrections.CorStatus.CorrectedByExecutor:
+                return "Исправлено исполнителем";
+            case Corrections.CorStatus.CheckedByBim:
+                return "Проверено BIM-менеджером";
+            case Corrections.CorStatus.Done:
+                return "Снято";
+            case Corrections.CorStatus.NewAgain:
+                return "Повторное";
+
+        }
+        return "Не найдено";
+
+    }
+}
+<br>
+<h3>@String.Format("Замечания к 3D модели по проекту {0} {1}", Model.Project.FullName, Model.CorNumber.ToString()) </h3>
+<br>
+<style>
+   table[id="Corrections"]{
+     border: 4px double #333; /*Рамка вокруг таблицы */
+    /*border-collapse: separate;  Способ отображения границы */ 
+    /*width: 100%;  Ширина таблицы */
+    border-spacing: 10px /* Расстояние между ячейками  */
+        }
+        th{
+       font-size:14px
+    }
+    td {
+        font-size: 12px
+    }      
+  
+  </style>
+
+<table id="Corrections" width="100%" cellspacing="0" cellpadding="4" border="1">
+    <tr>
+        <td>Текст замечания</td>
+        <td>@Model.CorBodyText</td>
+    </tr>
+    <tr>
+        <td>Скриншот</td>
+        <td><img src="~/images/@(Model.ImageLink)" asp-append-version="true" width="400" height="300" onclick="changeSizeImage(this)" /></td>
+    </tr>
+    <tr>
+        <td>Текущий статус замечания</td>
+        <td>@GetStatus(Model.Status)</td>
+    </tr>
+
+    <form method="post" action="CompleteCorrection">
+        <label class="CorrectionAnswer">Текст ответа на замечание</label>
+        <textarea rows="3" cols="80" asp-for="CorBodyText"></textarea>
+        <span asp-validation-for="CorBodyText"></span>
+
+        <label asp-for="ImageFile">Скриншот</label>
+        <input class="input-file" asp-for="ImageFile" accept="image/*"></input>
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+
+        <input type="submit" value="Ответить на замечание" />
+    </form>
+   
+</table>
+
+<br><br>
+
+
+            
+            
+ 
+

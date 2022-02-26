@@ -32,6 +32,7 @@ namespace WebApplication5.Models
         public string ImageLink { get; set; }
         public User Executor { get; set; }
         public Project Project { get; set; }
+        public Ans ans { get; set; }
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }

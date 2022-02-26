@@ -92,6 +92,7 @@ namespace WebApplication5.Controllers
             var listStat = GetStatuses();
             SelectList selectListItems = new SelectList(listStat, "Id", "StatusName", listStat[1]);
             ViewBag.Statuses = selectListItems;
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
             return View(context);
         }
 
@@ -127,6 +128,7 @@ namespace WebApplication5.Controllers
         [HttpPost]
         public ViewResult CreateCor()
         {
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
             ViewBag.NewId = context.Cors.Count()+1;
             var usersForFillName= context.Users.Where(x => x.FullName == null || x.FullName == string.Empty);
             FillFullName(usersForFillName);

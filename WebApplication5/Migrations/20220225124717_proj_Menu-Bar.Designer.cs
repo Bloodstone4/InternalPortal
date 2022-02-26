@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication5.Models;
 
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220225124717_proj_Menu-Bar")]
+    partial class proj_MenuBar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,32 +21,11 @@ namespace WebApplication5.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebApplication5.Models.Answer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AnswerText")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("ImageLink")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Answers");
-                });
-
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AnswerCorId");
 
                     b.Property<string>("CorBodyText")
                         .IsRequired();
@@ -65,8 +46,6 @@ namespace WebApplication5.Migrations
                     b.Property<int>("Status");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnswerCorId");
 
                     b.HasIndex("ExecutorId");
 
@@ -123,10 +102,6 @@ namespace WebApplication5.Migrations
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
                 {
-                    b.HasOne("WebApplication5.Models.Answer", "AnswerCor")
-                        .WithMany()
-                        .HasForeignKey("AnswerCorId");
-
                     b.HasOne("WebApplication5.Models.User", "Executor")
                         .WithMany()
                         .HasForeignKey("ExecutorId");

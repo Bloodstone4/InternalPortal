@@ -1,34 +1,15 @@
 ﻿
 @model AppDbContext
 @{
-                ViewData["Title"] = "2602-3 \"Завод масел\"";
+                ViewData["Title"] = "Все проекты";
                 DateTime newDate = DateTime.Now.Date;
-
-                string GetStatus(Corrections.CorStatus status)
-                {
-                    switch (status)
-                    {
-                        case Corrections.CorStatus.New:
-                            return "Новая";
-                        case Corrections.CorStatus.CorrectedByExecutor:
-                            return "Исправлено исполнителем";
-                        case Corrections.CorStatus.CheckedByBim:
-                            return "Проверено BIM-менеджером";
-                        case Corrections.CorStatus.Done:
-                            return "Снято";
-                        case Corrections.CorStatus.NewAgain:
-                            return "Повторное";
-
-                    }
-                    return "Не найдено";
-
-                }
+               
             }
 <br>
-<h3>Замечания к 3D модели по проекту 2602-3 "Завод масел" </h3>
+<h3>Все проекты</h3>
 <br>
 <style>
-   table[id="QualityBook"]{
+   table[id="ProjectTable"]{
      border: 4px double #333; /*Рамка вокруг таблицы */
     /*border-collapse: separate;  Способ отображения границы */ 
     /*width: 100%;  Ширина таблицы */
@@ -43,31 +24,30 @@
   
   </style>
 
-<table id="QualityBook" width="100%" cellspacing="0" cellpadding="4" border="1">
+<table id="ProjectTable" width="100%" cellspacing="0" cellpadding="4" border="1">
     <tr>
-        <th width="10%">Номер</th>
-        <th width="5%">Дата получения</th>
-        <th width="30%">Содержание</th>
+        <th width="10%">Внутренний номер проекта</th>
+        <th width="30%">Наименование проекта</th>
+        <th width="5%">Кол-во замечаний (отработанные/общее кол-во)</th>
         <th width="30%">Скриншот</th>
-        <th width="10%">Статус</th>
-        <th width="5%">Дата корректировки</th>
-        <th width="40%">Ответственный исполнитель</th>
+        <th width="10%">Статус проекта</th>        
     </tr>
     
- @foreach (var cor in Model.Cors)
+ @foreach (var project in Model.ProjectSet)
  {
-     String path = String.Format("<img src=\"~\\images\\{0}\" />", cor.ImageLink);
+     var corSet = Model.Cors.Where(x => x.Project.Id == project.Id);
+     var corDoneSet = corSet.Where(x => x.Status == Corrections.CorStatus.CorrectedByExecutor);
+     //String path = String.Format("<img src=\"~\\images\\{0}\" />", cor.ImageLink);
     <tr>
-       <td>@cor.CorNumber</td>
-        <td>@cor.CorTerm.ToShortDateString()</td>
-        <td>@cor.CorBodyText</td>
-        <td><img src="~/images/@(cor.ImageLink)" asp-append-version="true" width="400" height="300" onclick="changeSizeImage(this)" /></td>
+       <td>@project.InternalNum</td>
+        <td>@project.FullName</td>
+        <td>@String.Format("{0}/{1}", corDoneSet.Count(),corSet.Count())</td>
+        <td></td>
         <td>
-            @GetStatus(cor.Status)
             <br /><br />
-            <form method="post" asp-action="EditStatus" asp-route-corId="@cor.Id">
-                <input type="submit" value="Изменить" />
-</form>
+            <ul class="nav navbar-nav">
+                <li><a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="ViewCorrections">Посмотреть замечания</a></li>
+                </ul>
         </td>
         <td>  
         </td> 

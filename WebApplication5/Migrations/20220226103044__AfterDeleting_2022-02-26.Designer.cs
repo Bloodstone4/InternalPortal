@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication5.Models;
 
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220226103044__AfterDeleting_2022-02-26")]
+    partial class _AfterDeleting_20220226
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace WebApplication5.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AnswerCorId");
+                    b.Property<int?>("AnswerId");
 
                     b.Property<string>("CorBodyText")
                         .IsRequired();
@@ -66,7 +68,7 @@ namespace WebApplication5.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnswerCorId");
+                    b.HasIndex("AnswerId");
 
                     b.HasIndex("ExecutorId");
 
@@ -123,9 +125,9 @@ namespace WebApplication5.Migrations
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
                 {
-                    b.HasOne("WebApplication5.Models.Answer", "AnswerCor")
+                    b.HasOne("WebApplication5.Models.Answer", "Answer")
                         .WithMany()
-                        .HasForeignKey("AnswerCorId");
+                        .HasForeignKey("AnswerId");
 
                     b.HasOne("WebApplication5.Models.User", "Executor")
                         .WithMany()

@@ -18,6 +18,9 @@
     <Content Update="Views\Corrections\CorrectionsWereNotFound.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Corrections\CompleteCor.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Corrections\ViewCorrections.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
