@@ -19,23 +19,30 @@ namespace WebApplication5.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebApplication5.Models.Answer", b =>
+            modelBuilder.Entity("WebApplication5.Models.Ans", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AnswerText")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("ImageLink")
-                        .IsRequired();
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Answers");
+                    b.ToTable("AnsSet");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.Ans1", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ans1");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
@@ -43,8 +50,6 @@ namespace WebApplication5.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AnswerCorId");
 
                     b.Property<string>("CorBodyText")
                         .IsRequired();
@@ -64,13 +69,15 @@ namespace WebApplication5.Migrations
 
                     b.Property<int>("Status");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("ans1Id");
 
-                    b.HasIndex("AnswerCorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExecutorId");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ans1Id");
 
                     b.ToTable("Cors");
                 });
@@ -123,10 +130,6 @@ namespace WebApplication5.Migrations
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
                 {
-                    b.HasOne("WebApplication5.Models.Answer", "AnswerCor")
-                        .WithMany()
-                        .HasForeignKey("AnswerCorId");
-
                     b.HasOne("WebApplication5.Models.User", "Executor")
                         .WithMany()
                         .HasForeignKey("ExecutorId");
@@ -134,6 +137,10 @@ namespace WebApplication5.Migrations
                     b.HasOne("WebApplication5.Models.Project", "Project")
                         .WithMany("Corrections")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("WebApplication5.Models.Ans1", "ans1")
+                        .WithMany()
+                        .HasForeignKey("ans1Id");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>

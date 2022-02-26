@@ -10,8 +10,8 @@ using WebApplication5.Models;
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220226103526__DeleteAnswerFromCors")]
-    partial class _DeleteAnswerFromCors
+    [Migration("20220226105329__new")]
+    partial class _new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,23 +21,17 @@ namespace WebApplication5.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("WebApplication5.Models.Answer", b =>
+            modelBuilder.Entity("WebApplication5.Models.Ans", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AnswerText")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("ImageLink")
-                        .IsRequired();
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Answers");
+                    b.ToTable("AnsSet");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
@@ -64,11 +58,15 @@ namespace WebApplication5.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int?>("ansId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ExecutorId");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ansId");
 
                     b.ToTable("Cors");
                 });
@@ -128,6 +126,10 @@ namespace WebApplication5.Migrations
                     b.HasOne("WebApplication5.Models.Project", "Project")
                         .WithMany("Corrections")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("WebApplication5.Models.Ans", "ans")
+                        .WithMany()
+                        .HasForeignKey("ansId");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>

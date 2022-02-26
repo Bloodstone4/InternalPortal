@@ -2,7 +2,7 @@
 
 namespace WebApplication5.Migrations
 {
-    public partial class _AfterDeleting_20220226 : Migration
+    public partial class _new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
