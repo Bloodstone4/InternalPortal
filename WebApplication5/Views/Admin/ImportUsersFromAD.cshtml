@@ -2,26 +2,42 @@
 @{
     int count = 0;
 }
-<table>
-    <thead>
-    <td>Номер</td>
-    <td>Полное имя пользователя</td>
-    <td>Логин</td>
-    <td>Электронная почта</td>
-    <td>Отдел</td>
-    </thead>
-    @foreach (var user in Model)
-    {
-
-        <tr>
-            <td>@count</td>
-            <td>@user.FullName</td>
-            <td>@user.Login</td>
-            <td>@user.Email</td>
-            <td></td>
-        </tr>
-        count++;
+<br><br>
+<style>
+    td {
+        text-align: center;
     }
+    th {
+        text-align: center;
+        color: brown;
+            font-size: large
+    }
+</style>
+<form asp-action="ImportUsersPost" method="post">
+    <table class="tableForImport" border="1" align="center">
+        <tr>
+            <th>Select</th>
+            <th>Номер</th>
+            <th>Полное имя пользователя</th>
+            <th>Логин</th>
+            <th>Электронная почта</th>
+            <th>Отдел</th>
+        </tr>
+        @foreach (var user in Model)
+        {
 
-</table>
+            <tr>
+                <td>@Html.CheckBox("users[@count].NeedToImport")</td>
+                <td>@count</td>
+                <td> <input type="text" name="users[@count].FullName" value=" @user.FullName" readonly="readonly" /></td>
+                <td><input type="text" name="users[@count].Login" value="@user.Login" readonly="readonly"></td>
+                <td>@user.Email</td>
+                <td></td>
+            </tr>
+            count++;
+        }
+        <a asp-controller="Admin" asp-action="ImportUsersPost">Импортировать пользователей</a>
 
+    </table>
+    <input type="submit" value="Импорт" />
+</form>

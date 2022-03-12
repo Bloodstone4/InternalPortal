@@ -34,6 +34,14 @@ namespace WebApplication5.Controllers
             return View(usersNewList);
         }
 
+        public IActionResult ImportUsersPost(List<User> users)
+        {
+            List<User> userList = new List<User>();
+
+
+            return View();
+        }
+
         [HttpGet]
         public IActionResult AdminMain()
         {

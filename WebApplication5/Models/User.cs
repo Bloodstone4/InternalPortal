@@ -18,10 +18,12 @@ namespace WebApplication5.Models
         public string Login { get; set; }
         public string Email { get; set; }
         string fullName = string.Empty;
-        
-        [ForeignKey("DepartId")]
-        public Department Department{get;set;}
 
+        [ForeignKey("DepartId")]
+        public Department Department { get; set; }
+
+        [NotMapped]
+        public bool NeedToImport{get; set;}
 
         public string FullName
         {
