@@ -1,0 +1,27 @@
+﻿@model List<User>
+@{
+    int count = 0;
+}
+<table>
+    <thead>
+    <td>Номер</td>
+    <td>Полное имя пользователя</td>
+    <td>Логин</td>
+    <td>Электронная почта</td>
+    <td>Отдел</td>
+    </thead>
+    @foreach (var user in Model)
+    {
+
+        <tr>
+            <td>@count</td>
+            <td>@user.FullName</td>
+            <td>@user.Login</td>
+            <td>@user.Email</td>
+            <td></td>
+        </tr>
+        count++;
+    }
+
+</table>
+

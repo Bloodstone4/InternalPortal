@@ -26,23 +26,24 @@
     }
 }
 <br>
-<h3>@String.Format("Замечания к 3D модели по проекту {0} {1}", Model.Project.FullName, Model.CorNumber.ToString()) </h3>
+<h3>@String.Format("Замечание № {0}", Model.CorNumber.ToString()) </h3>
 <br>
 <style>
-   table[id="Corrections"]{
-     border: 4px double #333; /*Рамка вокруг таблицы */
-    /*border-collapse: separate;  Способ отображения границы */ 
-    /*width: 100%;  Ширина таблицы */
-    border-spacing: 10px /* Расстояние между ячейками  */
-        }
-        th{
-       font-size:14px
+    table[id="Corrections"] {
+        border: 4px double #333; /*Рамка вокруг таблицы */
+        /*border-collapse: separate;  Способ отображения границы */
+        /*width: 100%;  Ширина таблицы */
+        border-spacing: 10px /* Расстояние между ячейками  */
     }
+
+    th {
+        font-size: 14px
+    }
+
     td {
         font-size: 12px
-    }      
-  
-  </style>
+    }
+</style>
 
 <table id="Corrections" width="100%" cellspacing="0" cellpadding="4" border="1">
     <tr>
@@ -56,27 +57,43 @@
     <tr>
         <td>Текущий статус замечания</td>
         <td>@GetStatus(Model.Status)</td>
-    </tr>
-
-    <form method="post" action="CompleteCorrection">
-        <label class="CorrectionAnswer">Текст ответа на замечание</label>
-        <textarea rows="3" cols="80" asp-for="CorBodyText"></textarea>
-        <span asp-validation-for="CorBodyText"></span>
-
-        <label asp-for="ImageFile">Скриншот</label>
-        <input class="input-file" asp-for="ImageFile" accept="image/*"></input>
-        <span asp-validation-for="ImageFile" class="text-danger"></span>
-
-
-        <input type="submit" value="Ответить на замечание" />
-    </form>
-   
+    </tr>   
 </table>
 
-<br><br>
+<table id="Response" width="100%" cellspacing="0" cellpadding="4" border="1">
+    <form asp-controller="Corrections" asp-action="CompleteCorrection" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div></div>
+        <input type="hidden" asp-for="CorNumber" value=11></input>
+
+        <br><br>
+            <tr>
+                <td>  <label class="RemarkText1" asp-for="Response.Text">Текст замечания</label></td>
+
+                <td>
+                    <textarea rows="3" cols="80" asp-for="Response.Text"></textarea>
+                    <span asp-validation-for="Response.Text"></span>
+                </td>
+<tr>
+        <tr>
+        <td>Скриншот устранения</td>
+            <td>
+        <input class="input-file" asp-for="Response.ImageFile" accept="image/*"></input>
+        <span asp-validation-for="Response.ImageFile" class="text-danger"></span>
+                </td>
+            </tr>
+        <tr>
+
+            <td> <input type="submit" value="Отправить ответ">
+            </td>
+            </tr>
+</form>
+</table>
 
 
-            
-            
- 
+
+
+
+
+
 

@@ -1,6 +1,9 @@
 ﻿
 @{
     ViewData["Title"] = "AdminMain";
+    string logs = string.Empty;
+    string logsForCheck = ViewData["Logs"] as string;
+    if (!string.IsNullOrEmpty(logsForCheck)) logs = logsForCheck;
 }
 
 <h3>Администрирование портала</h3>
@@ -9,9 +12,18 @@
     <input type="submit" value="Создать новый проект">
 </form>
 <br /><br />
-<form asp-controller="Home" asp-action="CreateRemark" method="post" enctype="multipart/form-data">
-    <input type="submit" value="Импортировать пользователей">
+<form asp-controller="Home" asp-action="ImportUsersFromAd" method="post" enctype="multipart/form-data">
+     <input type="submit" value="Импортировать пользователей">
+     <a class="btn btn-default" asp-controller="Admin" asp-action="ImportUsersFromAD"><i ></i>Импортировать пользователей</a>
 </form>
- 
-        
+<div>
+    <button type="button" asp-controller="Admin" asp-action="ButtonClick" value="ButtonClick">ButtonClick</button>
+</div>
+ <div class="Logs">
+     Logs: @logs
+ </div>       
 
+<script>
+
+
+</script>

@@ -17,7 +17,9 @@ namespace WebApplication5.Models
         public DbSet<Corrections> Cors { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Project> ProjectSet { get; set; }
-        public DbSet<Ans> AnsSet { get; set; }
+        public DbSet<Response> ResponseSet { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{

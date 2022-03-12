@@ -2,30 +2,29 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApplication5.Models;
 
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220224120143_enum")]
-    partial class @enum
+    [Migration("20220312130640_HOD")]
+    partial class HOD
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CorBodyText")
                         .IsRequired();
@@ -43,6 +42,8 @@ namespace WebApplication5.Migrations
 
                     b.Property<DateTime>("RecieveDate");
 
+                    b.Property<int?>("ResponseId");
+
                     b.Property<int>("Status");
 
                     b.HasKey("Id");
@@ -51,14 +52,32 @@ namespace WebApplication5.Migrations
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("ResponseId");
+
                     b.ToTable("Cors");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ContractNumber");
 
@@ -72,6 +91,8 @@ namespace WebApplication5.Migrations
 
                     b.Property<string>("ShortName");
 
+                    b.Property<bool>("ShowInMenuBar");
+
                     b.Property<int>("Status");
 
                     b.HasKey("Id");
@@ -81,17 +102,40 @@ namespace WebApplication5.Migrations
                     b.ToTable("ProjectSet");
                 });
 
+            modelBuilder.Entity("WebApplication5.Models.Response", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ImageLink");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ResponseSet");
+                });
+
             modelBuilder.Entity("WebApplication5.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AD_GUID");
+
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("FullName");
 
                     b.Property<string>("LastName");
+
+                    b.Property<string>("Login");
+
+                    b.Property<string>("MiddleName");
+
+                    b.Property<string>("NameFromAD");
 
                     b.HasKey("Id");
 
@@ -107,6 +151,17 @@ namespace WebApplication5.Migrations
                     b.HasOne("WebApplication5.Models.Project", "Project")
                         .WithMany("Corrections")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("WebApplication5.Models.Response", "Response")
+                        .WithMany()
+                        .HasForeignKey("ResponseId");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.Department", b =>
+                {
+                    b.HasOne("WebApplication5.Models.User", "HeadOfDepartment")
+                        .WithOne("Department")
+                        .HasForeignKey("WebApplication5.Models.Department", "UserId");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>

@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApplication5.Models;
 
 namespace WebApplication5.Migrations
@@ -15,41 +15,14 @@ namespace WebApplication5.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("WebApplication5.Models.Ans", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AnsSet");
-                });
-
-            modelBuilder.Entity("WebApplication5.Models.Ans1", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ans1");
-                });
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("WebApplication5.Models.Corrections", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CorBodyText")
                         .IsRequired();
@@ -67,9 +40,9 @@ namespace WebApplication5.Migrations
 
                     b.Property<DateTime>("RecieveDate");
 
-                    b.Property<int>("Status");
+                    b.Property<int?>("ResponseId");
 
-                    b.Property<int?>("ans1Id");
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 
@@ -77,16 +50,31 @@ namespace WebApplication5.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("ans1Id");
+                    b.HasIndex("ResponseId");
 
                     b.ToTable("Cors");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ContractNumber");
 
@@ -111,11 +99,30 @@ namespace WebApplication5.Migrations
                     b.ToTable("ProjectSet");
                 });
 
+            modelBuilder.Entity("WebApplication5.Models.Response", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ImageLink");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ResponseSet");
+                });
+
             modelBuilder.Entity("WebApplication5.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AD_GUID");
+
+                    b.Property<int?>("DepartId");
+
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 
@@ -123,7 +130,15 @@ namespace WebApplication5.Migrations
 
                     b.Property<string>("LastName");
 
+                    b.Property<string>("Login");
+
+                    b.Property<string>("MiddleName");
+
+                    b.Property<string>("NameFromAD");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartId");
 
                     b.ToTable("Users");
                 });
@@ -138,9 +153,16 @@ namespace WebApplication5.Migrations
                         .WithMany("Corrections")
                         .HasForeignKey("ProjectId");
 
-                    b.HasOne("WebApplication5.Models.Ans1", "ans1")
+                    b.HasOne("WebApplication5.Models.Response", "Response")
                         .WithMany()
-                        .HasForeignKey("ans1Id");
+                        .HasForeignKey("ResponseId");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.Department", b =>
+                {
+                    b.HasOne("WebApplication5.Models.User", "HeadOfDepartment")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>
@@ -148,6 +170,13 @@ namespace WebApplication5.Migrations
                     b.HasOne("WebApplication5.Models.User", "Manager")
                         .WithMany()
                         .HasForeignKey("ManagerId");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.User", b =>
+                {
+                    b.HasOne("WebApplication5.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartId");
                 });
 #pragma warning restore 612, 618
         }

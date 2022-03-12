@@ -32,8 +32,9 @@ namespace WebApplication5
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            services.AddDbContext<AppDbContext>(x => x.UseSqlServer("Data Source=msdb; Database = Corrections; User Id=AdminRem; Password=123456; Persist Security Info=false ; MultipleActiveResultSets = True"));
+            //services.AddTransient<>
+            services.AddDbContext<AppDbContext>(x => x.UseNpgsql("Host=localhost;Port=5432;Database=Corrections;Username=postgres;Password=P@ssw0rd"));
+                //(x => x.UseSqlServer("Data Source=msdb; Database = Corrections; User Id=AdminRem; Password=123456; Persist Security Info=false ; MultipleActiveResultSets = True"));
             //services.AddSingleton<AppDbContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
            // SeedData.EnsurePopulated(services);
@@ -59,7 +60,7 @@ namespace WebApplication5
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Admin}/{action=CreateNewProject}/{id?}");
+                    template: "{controller=Admin}/{action=AdminMain}/{id?}");
 
                 routes.MapRoute("indexx1213", "indexx", new { controller = "Home", action = "Indexx" });
                 routes.MapRoute("indexxx1", "indexxx1", new { controller = "Home", action = "Indexx" });

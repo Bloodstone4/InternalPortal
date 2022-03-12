@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication5.Models;
@@ -20,6 +21,8 @@ namespace WebApplication5.Controllers
             _appEnvironment = appEnv;
             
         }
+
+
 
         public IActionResult ViewCorrections(int? Id)
         {
@@ -43,8 +46,9 @@ namespace WebApplication5.Controllers
             ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
             var corSet = context.Cors.Where(x => x.Id == Id);
             if (corSet.Count() > 0)
-            {                
-                return View(corSet.First());
+            {
+                ViewData["Correction"] = corSet.First();
+                return View(); //Передать answer
             }
             return View("PageNotFound");
         }
@@ -53,15 +57,31 @@ namespace WebApplication5.Controllers
         public IActionResult CompleteCorrection(Corrections cor)
         {
             ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
-            if (ModelState.IsValid)
-            {
-                context.SaveChanges();
-                return View(@"~/Views/Home/Index.cshtml", context);
-            }
-            else
-            {
-                return View("CompleteCor");
-            }
+         
+                var fileNamePath = cor.Response.ImageFile.FileName;
+                    var fileName = Path.GetFileNameWithoutExtension(fileNamePath);
+                    var extension = Path.GetExtension(fileNamePath);
+                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                    var path = "//images//" + fileName;
+                    cor.Response.ImageLink = fileName;
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                    cor.Response.ImageFile.CopyTo(fileStream);
+                    }
+                    //int idnum;
+                    //var res = Int32.TryParse(Request.Form["UserName"], out idnum);
+                    //if (res)
+                    //{
+                    //    var userFound = newCor.Executor = context.Users.Single(x => x.Id == idnum);
+                    //    newCor.Executor = userFound;
+                    //}
+
+
+                    context.ResponseSet.Add(cor.Response); //new Corrections(3, new DateTime(2021,6,7), "Everything checked"));
+                    context.SaveChanges();
+                    return View(@"~/Views/Home/Index", context);           
+                
+           
         }
 
     }
