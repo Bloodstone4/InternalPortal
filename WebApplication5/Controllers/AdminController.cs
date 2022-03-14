@@ -146,14 +146,31 @@ namespace WebApplication5.Controllers
                             AD_GUID = us.NativeGuid,
                             Email = GetProperty("mail", us),
                             Login = GetProperty("mailNickname", us),
+                            Department = FindOrCreateDepartment(GetProperty("department", us)),
                             NameFromAD = "1",
-                            FullName = "1"
+                            FullName = String.Format("{0} {1} {2}", fullNameSplited[0], fullNameSplited[1], fullNameSplited[2])
 
                         }) ;
                     }
                 }
             }
             return userList;
+        }
+
+        public Department FindOrCreateDepartment(string departmentName)
+        {
+           var departSet= context.Departments.Where(x => x.Name == departmentName);
+            if (departSet.Count() > 0)
+            {
+                return departSet.First();
+            }
+            else
+            {
+                Department newDepart = new Department() { Name = departmentName };
+                context.Departments.Add(newDepart);
+                context.SaveChanges();
+                return newDepart;
+            }
         }
 
         public string GetProperty(string propName, DirectoryEntry directoryEntry)

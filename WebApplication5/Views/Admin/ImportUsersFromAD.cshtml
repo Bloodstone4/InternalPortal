@@ -2,21 +2,27 @@
 @{
     int count = 0;
 }
-<br><br>
+<br>
+<br>
 <style>
+    .FullName{
+        width : 50px
+    }
     td {
         text-align: center;
     }
+
     th {
         text-align: center;
         color: brown;
-            font-size: large
+        font-size: large
     }
 </style>
 <form asp-action="ImportUsersPost" method="post">
+       <input type="submit" value="Импортировать пользователей" />    
     <table class="tableForImport" border="1" align="center">
         <tr>
-            <th>Select</th>
+            <th width="50px"><input type="checkbox" id="CheckAll" /></th>
             <th>Номер</th>
             <th>Полное имя пользователя</th>
             <th>Логин</th>
@@ -27,17 +33,31 @@
         {
 
             <tr>
-                <td>@Html.CheckBox("users[@count].NeedToImport")</td>
+                <td><input type="checkbox" name="users[@count].NeedToImport" value="true" /></td>
                 <td>@count</td>
-                <td> <input type="text" name="users[@count].FullName" value=" @user.FullName" readonly="readonly" /></td>
+                <td class="FullName"> <input type="text" size="50" name="users[@count].FullName" value="@user.FullName" readonly="readonly" /></td>
                 <td><input type="text" name="users[@count].Login" value="@user.Login" readonly="readonly"></td>
                 <td>@user.Email</td>
                 <td></td>
             </tr>
             count++;
         }
-        <a asp-controller="Admin" asp-action="ImportUsersPost">Импортировать пользователей</a>
+
 
     </table>
-    <input type="submit" value="Импорт" />
 </form>
+
+<script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+    $('#CheckAll').click(function Check() {
+        if ($('#CheckAll').is(':checked')) {
+            // Отметить все
+            $('body input:checkbox').prop('checked', true);           
+
+        } else {
+            // Снять все
+            $('body input:checkbox').prop('checked', false);
+        }
+    });
+</script>

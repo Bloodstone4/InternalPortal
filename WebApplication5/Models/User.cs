@@ -33,7 +33,7 @@ namespace WebApplication5.Models
             }
             set
             {
-                fullName = String.Format("{0} {1} {2}",  LastName, FirstName, MiddleName);
+                fullName = value; // fullName = String.Format("{0} {1} {2}",  LastName, FirstName, MiddleName);
             }
         }
 
