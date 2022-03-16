@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,10 @@ namespace WebApplication5
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueCountLimit = int.MaxValue;
+            });
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -34,6 +38,7 @@ namespace WebApplication5
             });
             //services.AddTransient<>
             services.AddDbContext<AppDbContext>(x => x.UseNpgsql("Host=localhost;Port=5432;Database=Corrections;Username=postgres;Password=P@ssw0rd"));
+            
                 //(x => x.UseSqlServer("Data Source=msdb; Database = Corrections; User Id=AdminRem; Password=123456; Persist Security Info=false ; MultipleActiveResultSets = True"));
             //services.AddSingleton<AppDbContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

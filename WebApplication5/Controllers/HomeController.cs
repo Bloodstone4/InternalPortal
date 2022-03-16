@@ -162,11 +162,11 @@ namespace WebApplication5.Controllers
         {
             context = appDbContext;
             _appEnvironment = appEnv;
-            if (context.Cors.Count() == 0)
-            {
-                context.Cors.AddRange(new Corrections(1, new DateTime(2021, 5, 5), "Everything just wrong"));
-                context.SaveChanges();
-            }
+            //if (context.Cors.Count() == 0)
+            //{
+            //    context.Cors.AddRange(new Corrections(1, new DateTime(2021, 5, 5), "Everything just wrong"));
+            //    context.SaveChanges();
+            //}
         }
 
         //    Company apple = new Company { Id = 1, Name = "Apple", Country = "США" };

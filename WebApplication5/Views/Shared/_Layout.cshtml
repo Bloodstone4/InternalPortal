@@ -32,10 +32,16 @@
 
                 <ul class="nav navbar-nav">
                     <li><img src="~/images/logo-top.svg"></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Все проекты</a></li>                  
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">2603</a></li>
-                    <li></li>
-                    <li></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Все проекты</a></li>
+                    @if (ViewData["ActiveProjects"] != null)
+                    {
+                        var projectSet = ViewData["ActiveProjects"] as IQueryable<Project>;
+                        foreach (var proj in projectSet)
+                        {
+                            <li><a asp-area="" asp-controller="Corrections" asp-action="ViewCorrections" asp-route-Id="@proj.Id">@proj.InternalNum</a></li>
+                        }
+                    }
+
                     <li><a asp-area="" asp-controller="Admin" asp-action="AdminMain">Администрирование</a></li>
 
                 </ul>

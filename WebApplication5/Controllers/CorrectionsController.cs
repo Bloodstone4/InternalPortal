@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
@@ -84,5 +85,62 @@ namespace WebApplication5.Controllers
            
         }
 
+        [HttpPost]
+        public ViewResult CreateRemark(Corrections newCor)
+        {
+            if (ModelState.IsValid)
+            {
+                // "~/images" + fileName;
+                //SaveFile
+                var fileName = Path.GetFileNameWithoutExtension(newCor.ImageFile.FileName);
+                var extension = Path.GetExtension(newCor.ImageFile.FileName);
+                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                var path = "//images//" + fileName;
+                newCor.ImageLink = fileName;
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    newCor.ImageFile.CopyTo(fileStream);
+                }
+                int idnum;
+                var res = Int32.TryParse(Request.Form["UserName"], out idnum);
+                if (res)
+                {
+                    var userFound = newCor.Executor = context.Users.Single(x => x.Id == idnum);
+                    newCor.Executor = userFound;
+                }
+
+
+                context.Cors.Add(newCor); //new Corrections(3, new DateTime(2021,6,7), "Everything checked"));
+                context.SaveChanges();
+                return View("Index", context);
+            }
+            else
+            {
+                return CreateCor();
+            }
+
+
+        }
+
+       
+        public ViewResult CreateCor()
+        {
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
+            ViewBag.NewId = context.Cors.Count() + 1;
+            var usersForFillName = context.Users.Where(x => x.FullName == null || x.FullName == string.Empty);
+            FillFullName(usersForFillName);
+            ViewData["Users"] = new SelectList(context.Users, "Id", "FullName");
+            return View();
+        }
+
+        public void FillFullName(IQueryable<User> users)
+        {
+            foreach (var user in users)
+            {
+                user.FullName = "1"; // нужно вызвать функцию set для автоматического заполнения
+
+            }
+            context.SaveChanges();
+        }
     }
 }

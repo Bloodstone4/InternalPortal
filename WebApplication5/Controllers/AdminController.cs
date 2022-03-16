@@ -21,10 +21,10 @@ namespace WebApplication5.Controllers
             return View("AdminMain12");
         }
 
-        
+        List<User> usersNewList;
         public IActionResult ImportUsersFromAD()
         {
-            List<User> usersNewList = new List<User>();
+            usersNewList = new List<User>();
             List<User> usersUpdateList = new List<User>();
             var usersFromAD = GetUsersFromAD();
             CompareUsers(usersFromAD, ref usersNewList, ref usersUpdateList); // Можно обработать обновление пользователей, также вывести пользователю для подтверждения
@@ -36,10 +36,28 @@ namespace WebApplication5.Controllers
 
         public IActionResult ImportUsersPost(List<User> users)
         {
-            List<User> userList = new List<User>();
-
-
-            return View();
+            var userListRet= users.Where(x => x.NeedToImport == false).ToList();
+            var userList = users.Where(x => x.NeedToImport == true);
+            foreach (var user in userList)
+            {
+                if (user.Department.Id != 0)
+                {
+                    var departId = user.Department.Id;
+                    user.Department = context.Departments.Where(x => x.Id == user.Department.Id).First();
+                }
+                else
+                {
+                    user.Department = null;
+                }
+                string[] fullNameSplited= user.FullName.Split(' ');
+                user.LastName = fullNameSplited[0];
+                user.FirstName = fullNameSplited[1];
+                user.MiddleName = fullNameSplited[2];
+                context.Users.Add(user); //Add department
+            }
+            context.SaveChanges();
+            ViewData["Information"] = String.Format("Импортировано пользователей - {0}", userList.Count() );
+            return View("ImportUsersFromAD", userListRet);
         }
 
         [HttpGet]
@@ -146,10 +164,8 @@ namespace WebApplication5.Controllers
                             AD_GUID = us.NativeGuid,
                             Email = GetProperty("mail", us),
                             Login = GetProperty("mailNickname", us),
-                            Department = FindOrCreateDepartment(GetProperty("department", us)),
-                            NameFromAD = "1",
+                            Department = FindOrCreateDepartment(GetProperty("department", us)),                            
                             FullName = String.Format("{0} {1} {2}", fullNameSplited[0], fullNameSplited[1], fullNameSplited[2])
-
                         }) ;
                     }
                 }

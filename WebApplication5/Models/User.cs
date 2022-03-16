@@ -23,6 +23,9 @@ namespace WebApplication5.Models
         public Department Department { get; set; }
 
         [NotMapped]
+        int IdDepart { get; set; }
+
+        [NotMapped]
         public bool NeedToImport{get; set;}
 
         public string FullName
