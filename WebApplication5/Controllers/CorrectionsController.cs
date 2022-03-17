@@ -86,7 +86,7 @@ namespace WebApplication5.Controllers
         }
 
         [HttpPost]
-        public ViewResult CreateRemark(Corrections newCor)
+        public ViewResult CreateRemark(Corrections newCor, int? ProjectId)
         {
             if (ModelState.IsValid)
             {
@@ -116,20 +116,22 @@ namespace WebApplication5.Controllers
             }
             else
             {
-                return CreateCor();
+                return View("Index", context);
             }
 
 
         }
 
        
-        public ViewResult CreateCor()
+        public ViewResult CreateCor(int? Id)
         {
+            ViewData["Project"]= context.ProjectSet.Where(x => x.Id == Id).First();        
+            ViewData["Users"] = context.Users.ToList();
             ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
             ViewBag.NewId = context.Cors.Count() + 1;
-            var usersForFillName = context.Users.Where(x => x.FullName == null || x.FullName == string.Empty);
-            FillFullName(usersForFillName);
-            ViewData["Users"] = new SelectList(context.Users, "Id", "FullName");
+            //var usersForFillName = context.Users.Where(x => x.FullName == null || x.FullName == string.Empty);
+            //FillFullName(usersForFillName);
+            //ViewData["Users"] = new SelectList(context.Users, "Id", "FullName");
             return View();
         }
 
