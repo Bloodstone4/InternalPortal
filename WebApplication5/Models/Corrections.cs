@@ -28,13 +28,15 @@ namespace WebApplication5.Models
         [Required(ErrorMessage = "Требуется заполнить замечание")]
         public string CorBodyText { get; set; }
         public CorStatus Status { get; set; }
-        [Required(ErrorMessage ="Укажите, пож-та, скриншот")]
+        
         public string ImageLink { get; set; }
+        [Required(ErrorMessage = "Выберите исполнителя")]
         public User Executor { get; set; }
         public Project Project { get; set; }
         public Response Response { get; set; }
 
         [NotMapped]
+        [Required(ErrorMessage = "Укажите, пож-та, скриншот")]
         public IFormFile ImageFile { get; set; }
 
         public DateTime RecieveDate { get; set; }

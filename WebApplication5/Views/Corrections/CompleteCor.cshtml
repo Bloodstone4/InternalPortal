@@ -1,9 +1,10 @@
 ﻿
-@model Corrections
+@model Response
 @{
     Project project = ViewData["Project"] as Project;
     ViewData["Title"] = "2602-3 \"Завод масел\"";
     DateTime newDate = DateTime.Now.Date;
+    var cor = ViewData["Corrections"] as Corrections;
 
     string GetStatus(Corrections.CorStatus status)
     {
@@ -26,7 +27,7 @@
     }
 }
 <br>
-<h3>@String.Format("Замечание № {0}", Model.CorNumber.ToString()) </h3>
+<h3>@String.Format("Замечание № {0}", cor.CorNumber.ToString()) </h3>
 <br>
 <style>
     table[id="Corrections"] {
@@ -48,15 +49,15 @@
 <table id="Corrections" width="100%" cellspacing="0" cellpadding="4" border="1">
     <tr>
         <td>Текст замечания</td>
-        <td>@Model.CorBodyText</td>
+        <td>@cor.CorBodyText</td>
     </tr>
     <tr>
         <td>Скриншот</td>
-        <td><img src="~/images/@(Model.ImageLink)" asp-append-version="true" width="400" height="300" onclick="changeSizeImage(this)" /></td>
+        <td><img src="~/images/@(cor.ImageLink)" asp-append-version="true" width="400" height="300" onclick="changeSizeImage(this)" /></td>
     </tr>
     <tr>
         <td>Текущий статус замечания</td>
-        <td>@GetStatus(Model.Status)</td>
+        <td>@GetStatus(cor.Status)</td>
     </tr>   
 </table>
 
@@ -64,22 +65,22 @@
     <form asp-controller="Corrections" asp-action="CompleteCorrection" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly"></div>
         <div></div>
-        <input type="hidden" asp-for="CorNumber" value=11></input>
+        <input type="hidden" name="corId" value="@cor.Id"></input>
 
         <br><br>
             <tr>
-                <td>  <label class="RemarkText1" asp-for="Response.Text">Текст замечания</label></td>
+                <td>  <label class="RemarkText1" asp-for="@Model.Text">Текст ответа</label></td>
 
                 <td>
-                    <textarea rows="3" cols="80" asp-for="Response.Text"></textarea>
-                    <span asp-validation-for="Response.Text"></span>
+                    <textarea rows="3" cols="80" asp-for="@Model.Text"></textarea>
+                    <span asp-validation-for="@Model.Text"></span>
                 </td>
 <tr>
         <tr>
         <td>Скриншот устранения</td>
             <td>
-        <input class="input-file" asp-for="Response.ImageFile" accept="image/*"></input>
-        <span asp-validation-for="Response.ImageFile" class="text-danger"></span>
+        <input class="input-file" asp-for="@Model.ImageFile" accept="image/*"></input>
+        <span asp-validation-for="@Model.ImageFile" class="text-danger"></span>
                 </td>
             </tr>
         <tr>
