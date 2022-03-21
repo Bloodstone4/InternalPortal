@@ -1,10 +1,10 @@
-﻿.AddNewReamark {
+﻿.QualityBook {
     background: #f5ffff;
     border-collapse: collapse;
     text-align: left;
 }
 
-    .AddNewReamark th {
+    .QualityBook th {
         border-top: 1px solid #777777;
         border-bottom: 1px solid #777777;
         box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999;
@@ -14,7 +14,7 @@
         position: relative;
     }
 
-        .AddNewReamark th:after {
+        .QualityBook th:after {
             content: "";
             display: block;
             position: absolute;
@@ -25,55 +25,35 @@
             background: linear-gradient(rgba(255, 255, 255, 0), rgba(255,255,255,.08));
         }
 
-    .AddNewReamark tr:nth-child(odd) {
+    .QualityBook tr:nth-child(odd) {
         background: #ebf3f9;
     }
 
-    .AddNewReamark th:first-child {
+    .QualityBook th:first-child {
         border-left: 1px solid #777777;
         border-bottom: 1px solid #777777;
         box-shadow: inset 1px 1px 0 #999999, inset 0 -1px 0 #999999;
     }
 
-    .AddNewReamark th:last-child {
+    .QualityBook th:last-child {
         border-right: 1px solid #777777;
         border-bottom: 1px solid #777777;
         box-shadow: inset -1px 1px 0 #999999, inset 0 -1px 0 #999999;
     }
 
-    .AddNewReamark td {
+    .QualityBook td {
         border: 1px solid #e3eef7;
         padding: 10px 15px;
         position: relative;
         transition: all 0.5s ease;
     }
 
-    .AddNewReamark tbody:hover td {
+    .QualityBook tbody:hover td {
         color: transparent;
         text-shadow: 0 0 3px #a09f9d;
     }
 
-    .AddNewReamark tbody:hover tr:hover td {
+    .QualityBook tbody:hover tr:hover td {
         color: #444444;
         text-shadow: none;
     }
-
-.CorText {
-    vertical-align: central
-}
-
-.field-validation-error {
-}
-
-.input-validation-error {
-    color: red;
-    background-color: lightcoral
-}
-
-.validation-summary-errors {
-    color: red;
-}
-
-.field-validation-error {
-    color: red;
-}

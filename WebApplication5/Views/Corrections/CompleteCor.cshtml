@@ -26,6 +26,7 @@
 
     }
 }
+<link rel="stylesheet" href="~/css/ValidationFormStyle.css">
 <br>
 <h3>@String.Format("Замечание № {0}", cor.CorNumber.ToString()) </h3>
 <br>
@@ -73,7 +74,7 @@
 
                 <td>
                     <textarea rows="3" cols="80" asp-for="@Model.Text"></textarea>
-                    <span asp-validation-for="@Model.Text"></span>
+                    <p><span asp-validation-for="@Model.Text"></span></p>
                 </td>
 <tr>
         <tr>

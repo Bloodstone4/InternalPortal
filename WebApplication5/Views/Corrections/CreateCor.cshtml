@@ -4,7 +4,7 @@
     var project = ViewData["Project"] as Project;
     ViewData["Title"] = String.Format("{0}. Добавить новое замечание", project.InternalNum);
 }
-<!-- <link rel="stylesheet" href="~/css/AddNewRemark.css" />-->
+<link rel="stylesheet" href="~/css/AddNewRemark.css" />
 <br>
 <br>
 
@@ -13,15 +13,15 @@
 
 <form asp-controller="Corrections" asp-action="CreateRemark" method="post" enctype="multipart/form-data">
 
-    <table border="1">
+    <table class="AddNewReamark">
         <tr>
             <td><div>Проект:</td>
             <td> @String.Format("{0} - {1}", project.InternalNum, project.FullName)</div></td>
             <input type="hidden" name="ProjectId" value="@project.Id"></input>
         </tr>
         <tr>
-            <td><div>Номер замечания: @ViewBag.NewId</div></td>
-            <td> <input type="hidden" asp-for="CorNumber" value=@ViewBag.NewId></input> </td>
+            <td>Номер замечания: </td>
+            <td> @ViewBag.NewId <input type="hidden" asp-for="CorNumber" value=@ViewBag.NewId></input> </td>
         </tr>
         <tr>
             <td class="CorText"> Текст замечания</td>
@@ -79,25 +79,7 @@
 
 
 <style>
-    .CorText{
-        vertical-align : central
-    }
-    .field-validation-error{
-        
-    }
 
-    .input-validation-error {
-        color: red;
-        background-color: lightcoral
-    }
-
-    .validation-summary-errors {
-        color: red;
-    }
-
-    .field-validation-error {
-        color: red;
-    }
 </style>
 </div>
 

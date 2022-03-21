@@ -1,7 +1,9 @@
 ﻿
 @model IQueryable<Corrections>
 @{
-    Project project = ViewData["Project"] as Project;
+
+ 
+      Project project = ViewData["Project"] as Project;
     ViewData["Title"] = "2602-3 \"Завод масел\"";
     DateTime newDate = DateTime.Now.Date;
 
@@ -28,81 +30,59 @@
 <br>
 <h3>@String.Format("Замечания к 3D модели по проекту {0} {1}", project.InternalNum, project.FullName) </h3>
 <br>
-<style>
-   table[id="QualityBook"]{
-     border: 4px double #333; /*Рамка вокруг таблицы */
-    /*border-collapse: separate;  Способ отображения границы */ 
-    /*width: 100%;  Ширина таблицы */
-    border-spacing: 10px /* Расстояние между ячейками  */
-        }
-        th{
-       font-size:14px
-    }
-    td {
-        font-size: 12px
-    }      
-  
-  </style>
+<link rel="stylesheet" href="~/css/ViewCorrections.css">
 
-<table id="QualityBook" width="100%" cellspacing="0" cellpadding="4" border="1">
+<table class="QualityBook" width="100%" cellspacing="0" cellpadding="4" border="1">
     <tr>
         <th width="10%">Номер</th>
         <th width="5%">Дата получения</th>
         <th width="30%">Содержание</th>
         <th width="30%">Скриншот</th>
         <th width="10%">Статус</th>
-        <th width="5%">Дата корректировки</th>
+        <th width="5%">Доступные действия</th>
         <th width="40%">Ответственный исполнитель</th>
     </tr>
-    
- @foreach (var cor in Model)
- {
-     String path = String.Format("<img src=\"~\\images\\{0}\" />", cor.ImageLink);
-    <tr>
-       <td>@cor.CorNumber</td>
-        <td>@cor.CorTerm.ToShortDateString()</td>
-        <td>@cor.CorBodyText</td>
-        <td><img src="~/images/@(cor.ImageLink)" asp-append-version="true" width="400" height="300" onclick="changeSizeImage(this)" /></td>
-        <td>
-            @GetStatus(cor.Status)
-            <br /><br />
-            <form method="post" asp-action="EditStatus" asp-route-corId="@cor.Id">
-                <input type="submit" value="Изменить" />
-</form>
-        </td>
-        <td> 
-            <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Ответить на замечание</a>
-        </td> 
-        <td></td>
-    </tr>
- }
 
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+    @foreach (var cor in Model)
+    {
+        String path = String.Format("<img src=\"~\\images\\{0}\" />", cor.ImageLink);
+        <tr>
+            <td>@cor.CorNumber</td>
+            <td>@cor.CorTerm.ToShortDateString()</td>
+            <td>@cor.CorBodyText</td>
+            <td><img src="~/images/@(cor.ImageLink)" asp-append-version="true" width="400" height="300" onclick="changeSizeImage(this)" /></td>
+            <td>
+                @GetStatus(cor.Status)
+
+            </td>
+            <td>
+                <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Ответить на замечание</a>
+            </td>
+            @{
+                string executor;
+                if (cor.Executor != null) executor = cor.Executor.LastName; else executor = string.Empty;
+            }
+            <td>
+                @executor;
+                </td >
+                </tr >
+            }
+
 </table>
 
-<br><br>
+<br>
+<br>
+
+<a class="btn-link" asp-action="CreateCor" asp-controller="Corrections" asp-route-Id="@project.Id">Создать новое замечание</a>
 
 
-            <form method="post" action="~/Home/CreateCor">
-                <input type="submit" value="Создать новое замечание" />
-            </form>
-            
- 
 
-            <script>
-                <script language="JavaScript">
-                    var bigsize = "300"; //Размер большой картинки
-                    var smallsize = "150"; //Размер маленькой картинки
-                    function changeSizeImage(im) {
+<script>
+    <script language="JavaScript">
+        var bigsize = "300"; //Размер большой картинки
+        var smallsize = "150"; //Размер маленькой картинки
+        function changeSizeImage(im) {
               if(im.height == bigsize) im.height = smallsize;
-                    else im.height = bigsize;
+        else im.height = bigsize;
 }
-            </script>
+</script>

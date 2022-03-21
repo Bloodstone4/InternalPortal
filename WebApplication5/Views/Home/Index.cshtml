@@ -8,29 +8,15 @@
 <br>
 <h3>Все проекты</h3>
 <br>
-<style>
-   table[id="ProjectTable"]{
-     border: 4px double #333; /*Рамка вокруг таблицы */
-    /*border-collapse: separate;  Способ отображения границы */ 
-    /*width: 100%;  Ширина таблицы */
-    border-spacing: 10px /* Расстояние между ячейками  */
-        }
-        th{
-       font-size:14px
-    }
-    td {
-        font-size: 12px
-    }      
-  
-  </style>
+<link rel="stylesheet" href="~/css/Index.css">
 
-<table id="ProjectTable" width="100%" cellspacing="0" cellpadding="4" border="1">
+<table class="ProjectSetTable">
     <tr>
-        <th width="10%">Внутренний номер проекта</th>
-        <th width="30%">Наименование проекта</th>
-        <th width="5%">Кол-во замечаний (отработанные/общее кол-во)</th>
-        <th width="30%">Скриншот</th>
-        <th width="10%">Статус проекта</th>        
+        <th class="ProjIdInternal">Внутренний номер проекта</th>
+        <th class="ProjectName">Наименование проекта</th>
+        <th class="ScreenShot">Вид объекта</th>
+        <th class="RemarksCount">Кол-во замечаний (отработанные/общее кол-во)</th>
+        <th class="ProjectStatus">Действия по проекту</th>
     </tr>
     
  @foreach (var project in Model.ProjectSet)
@@ -41,39 +27,23 @@
     <tr>
        <td>@project.InternalNum</td>
         <td>@project.FullName</td>
-        <td>@String.Format("{0}/{1}", corDoneSet.Count(),corSet.Count())</td>
         <td></td>
+        <td>@String.Format("{0}/{1}", corDoneSet.Count(), corSet.Count())</td>
         <td>
             <br /><br />
-            <ul class="nav navbar-nav">
-                <li><a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="ViewCorrections">Посмотреть замечания</a></li>
-                </ul>
-        </td>
-        <td>
-            <a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="CreateCor">Добавить замечания</a>
+                  <ul class="nav navbar-nav">
+                      <li><a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="ViewCorrections">Посмотреть замечания</a></li>
+                      <li> <a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="CreateCor">Добавить замечания</a> </li>
+                     
+                  </ul>
         </td> 
-        <td></td>
+        <td>@project.Manager.FullName</td>
     </tr>
  }
 
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+
 </table>
-
-
-<br><br>
-
-
-           
-    <a class="btn-toolbar" asp-controller="Corrections" asp-action="CreateCor"> Создать новое замечание </a>      
-          
+        
             
  
 
