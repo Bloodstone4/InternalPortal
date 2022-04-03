@@ -10,8 +10,8 @@ using WebApplication5.Models;
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220306162408_init_01")]
-    partial class init_01
+    [Migration("20220403091937__IsDeteted")]
+    partial class _IsDeteted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,9 @@ namespace WebApplication5.Migrations
 
                     b.Property<DateTime>("CorTerm");
 
-                    b.Property<int?>("ExecutorId");
+                    b.Property<int>("ExecutorId");
 
-                    b.Property<string>("ImageLink")
-                        .IsRequired();
+                    b.Property<string>("ImageLink");
 
                     b.Property<int?>("ProjectId");
 
@@ -57,6 +56,22 @@ namespace WebApplication5.Migrations
                     b.ToTable("Cors");
                 });
 
+            modelBuilder.Entity("WebApplication5.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("WebApplication5.Models.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -69,6 +84,8 @@ namespace WebApplication5.Migrations
 
                     b.Property<string>("InternalNum")
                         .IsRequired();
+
+                    b.Property<bool>("IsDeleted");
 
                     b.Property<int?>("ManagerId");
 
@@ -92,7 +109,8 @@ namespace WebApplication5.Migrations
 
                     b.Property<string>("ImageLink");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -104,13 +122,27 @@ namespace WebApplication5.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AD_GUID");
+
+                    b.Property<int?>("DepartId");
+
+                    b.Property<string>("Email");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("FullName");
 
                     b.Property<string>("LastName");
 
+                    b.Property<string>("Login");
+
+                    b.Property<string>("MiddleName");
+
+                    b.Property<string>("NameFromAD");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartId");
 
                     b.ToTable("Users");
                 });
@@ -119,7 +151,8 @@ namespace WebApplication5.Migrations
                 {
                     b.HasOne("WebApplication5.Models.User", "Executor")
                         .WithMany()
-                        .HasForeignKey("ExecutorId");
+                        .HasForeignKey("ExecutorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebApplication5.Models.Project", "Project")
                         .WithMany("Corrections")
@@ -130,11 +163,25 @@ namespace WebApplication5.Migrations
                         .HasForeignKey("ResponseId");
                 });
 
+            modelBuilder.Entity("WebApplication5.Models.Department", b =>
+                {
+                    b.HasOne("WebApplication5.Models.User", "HeadOfDepartment")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("WebApplication5.Models.Project", b =>
                 {
                     b.HasOne("WebApplication5.Models.User", "Manager")
                         .WithMany()
                         .HasForeignKey("ManagerId");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.User", b =>
+                {
+                    b.HasOne("WebApplication5.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartId");
                 });
 #pragma warning restore 612, 618
         }

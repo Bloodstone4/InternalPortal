@@ -65,7 +65,7 @@ namespace WebApplication5
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Admin}/{action=ImportUsersFromAD}/{id?}");
+                    template: "{controller=Admin}/{action=CreateNewProject}/{id?}");
 
                 routes.MapRoute("indexx1213", "indexx", new { controller = "Home", action = "Indexx" });
                 routes.MapRoute("indexxx1", "indexxx1", new { controller = "Home", action = "Indexx" });

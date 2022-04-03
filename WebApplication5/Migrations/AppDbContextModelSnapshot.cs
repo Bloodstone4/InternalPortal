@@ -83,6 +83,8 @@ namespace WebApplication5.Migrations
                     b.Property<string>("InternalNum")
                         .IsRequired();
 
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<int?>("ManagerId");
 
                     b.Property<string>("ShortName");

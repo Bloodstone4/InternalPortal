@@ -15,9 +15,8 @@
     <tr>
         <th class="ProjIdInternal">Внутренний номер проекта</th>
         <th class="ProjectName">Наименование проекта</th>
-        <th class="ScreenShot">Вид объекта</th>
-        <th class="RemarksCount">Кол-во замечаний (отработанные/общее кол-во)</th>
-        <th class="ProjectStatus">Действия по проекту</th>
+        <th class="ScreenShot">Вид объекта</th>        
+        <th class="ProjectStatus">Удалить проект</th>
     </tr>
     
  @foreach (var project in Model)
@@ -29,13 +28,10 @@
     <tr>
        <td>@project.InternalNum</td>
         <td>@project.FullName</td>
-        <td></td>
-        <td>@String.Format("{0}/{1}", corDoneSet.Count(), corSet.Count())</td>
-        <td>
-            <br /><br />
+        <td></td>        
+        <td>          
                   <ul class="nav navbar-nav">
-                      <li><a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="ViewCorrections">Посмотреть замечания</a></li>
-                      <li> <a asp-route-Id="@project.Id" asp-controller="Corrections" asp-action="CreateCor">Добавить замечания</a> </li>
+                      <li><a asp-route-Id="@project.Id" asp-controller="Admin" asp-action="DeleteSelectedProject">Удалить проект</a></li>                    
                      
                   </ul>
         </td> 

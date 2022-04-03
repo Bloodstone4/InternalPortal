@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication5.Models;
 using System.DirectoryServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication5.Controllers
 {
@@ -29,10 +30,12 @@ namespace WebApplication5.Controllers
             var usersFromAD = GetUsersFromAD();
             CompareUsers(usersFromAD, ref usersNewList, ref usersUpdateList); // Можно обработать обновление пользователей, также вывести пользователю для подтверждения
             //context.SaveChanges();
-            //ImportUsersFromAdExecute();        
+            //ImportUsersFromAdExecute();      
 
             return View(usersNewList);
         }
+
+        
 
         public IActionResult ImportUsersPost(List<User> users)
         {
@@ -79,9 +82,56 @@ namespace WebApplication5.Controllers
 
         public IActionResult CreateNewProject()
         {
-            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
-            ViewData["Users"] = context.Users.ToList();
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true); //new Project() { InternalNum = "2603" }; 
+                                                                                                 //var user = new User() { LastName = "Ведерникова", FirstName = "Альбина", FullName = "Ведерникова Альбина" };
+                                                                                                 // var userList = new List<User>();
+                                                                                               //userList.Add(user);
+            if (context.Users.Count() == 0) AddDefaultUsers(context);
+            ViewData["Users"] = context.Users.ToList();//userList;
+            
             return View();
+        }
+
+        public List<Statuses> GetStatuses()
+        {
+            var statuses = new List<Statuses>();
+            statuses.Add(new Statuses() { Id = 0, StatusName = "Новое" });
+            statuses.Add(new Statuses() { Id = 1, StatusName = "Исправлено исполнителем" });
+            statuses.Add(new Statuses() { Id = 2, StatusName = "Проверено BIM-координатором" });
+            statuses.Add(new Statuses() { Id = 3, StatusName = "Снято" });
+            statuses.Add(new Statuses() { Id = 4, StatusName = "Повторное" });
+            return statuses;
+        }
+
+        public IActionResult DeleteProjects()
+        {
+            var listStat = GetStatuses();
+            SelectList selectListItems = new SelectList(listStat, "Id", "StatusName", listStat[1]);
+            ViewBag.Statuses = selectListItems;
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
+            ViewData["Context"] = context;
+            var projectSet = context.ProjectSet.Where(x => x.IsDeleted == false).Include(x => x.Manager).ToList();
+            return View(projectSet);
+        }
+
+       
+       public IActionResult DeleteSelectedProject(int? Id)
+        {
+           context.ProjectSet.First(x => x.Id == Id).IsDeleted=true;
+            context.SaveChanges();
+            var projectSet= context.ProjectSet.Where(x => x.IsDeleted == false).ToList();
+            return View("DeleteProjects", projectSet);
+        }
+
+        public void AddDefaultUsers(AppDbContext appDbContext)
+        {
+            List<User> userList = new List<User>()
+            {
+                new User(){FirstName ="Альбина", LastName="Ведерникова", FullName="Альбина Ведерникова" },
+                 new User(){FirstName ="Тимофей", LastName="Беликов", FullName="Тимофей Беликов" }
+            };
+            appDbContext.Users.AddRange(userList);
+            appDbContext.SaveChanges();
         }
 
         [HttpPost]

@@ -19,7 +19,8 @@ namespace WebApplication5.Models
         public List<Corrections> Corrections { get; set; }
         public Status Status { get; set;}
         public bool ShowInMenuBar { get; set; }
-       
+        public bool IsDeleted { get; set; }
+
     }
 
     public enum Status

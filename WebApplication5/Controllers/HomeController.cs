@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using static WebApplication5.Models.Corrections;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication5.Controllers
 {
@@ -93,7 +94,9 @@ namespace WebApplication5.Controllers
             SelectList selectListItems = new SelectList(listStat, "Id", "StatusName", listStat[1]);
             ViewBag.Statuses = selectListItems;
             ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
-            return View(context);
+            ViewData["Context"] = context;
+            var projectSet= context.ProjectSet.Where(x=>x.IsDeleted==false).Include(x=>x.Manager).ToList();
+            return View(projectSet);
         }
 
         [Route("Admin/AdminMain.cshtml")]

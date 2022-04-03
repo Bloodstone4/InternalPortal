@@ -10,8 +10,8 @@ using WebApplication5.Models;
 namespace WebApplication5.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220312130640_HOD")]
-    partial class HOD
+    [Migration("20220402080111__init")]
+    partial class _init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,9 @@ namespace WebApplication5.Migrations
 
                     b.Property<DateTime>("CorTerm");
 
-                    b.Property<int?>("ExecutorId");
+                    b.Property<int>("ExecutorId");
 
-                    b.Property<string>("ImageLink")
-                        .IsRequired();
+                    b.Property<string>("ImageLink");
 
                     b.Property<int?>("ProjectId");
 
@@ -68,8 +67,7 @@ namespace WebApplication5.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Departments");
                 });
@@ -109,7 +107,8 @@ namespace WebApplication5.Migrations
 
                     b.Property<string>("ImageLink");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -122,6 +121,8 @@ namespace WebApplication5.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AD_GUID");
+
+                    b.Property<int?>("DepartId");
 
                     b.Property<string>("Email");
 
@@ -139,6 +140,8 @@ namespace WebApplication5.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartId");
+
                     b.ToTable("Users");
                 });
 
@@ -146,7 +149,8 @@ namespace WebApplication5.Migrations
                 {
                     b.HasOne("WebApplication5.Models.User", "Executor")
                         .WithMany()
-                        .HasForeignKey("ExecutorId");
+                        .HasForeignKey("ExecutorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebApplication5.Models.Project", "Project")
                         .WithMany("Corrections")
@@ -160,8 +164,8 @@ namespace WebApplication5.Migrations
             modelBuilder.Entity("WebApplication5.Models.Department", b =>
                 {
                     b.HasOne("WebApplication5.Models.User", "HeadOfDepartment")
-                        .WithOne("Department")
-                        .HasForeignKey("WebApplication5.Models.Department", "UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WebApplication5.Models.Project", b =>
@@ -169,6 +173,13 @@ namespace WebApplication5.Migrations
                     b.HasOne("WebApplication5.Models.User", "Manager")
                         .WithMany()
                         .HasForeignKey("ManagerId");
+                });
+
+            modelBuilder.Entity("WebApplication5.Models.User", b =>
+                {
+                    b.HasOne("WebApplication5.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartId");
                 });
 #pragma warning restore 612, 618
         }
