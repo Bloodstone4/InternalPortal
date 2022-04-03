@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,10 +31,11 @@ namespace WebApplication5.Controllers
             ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
             if (Id.HasValue)
             {
-                var corSet=context.Cors.Where(x => x.Project.Id == Id);
+                var corSet=context.Cors.Where(x => x.Project.Id == Id).Include(x=>x.Executor).ToList();
                 if (corSet.Count() > 0)
                 {                  
                     ViewData["Project"] = context.ProjectSet.Where(x => x.Id == Id).First();
+                    
                     return View(corSet);
                 }
                 
@@ -75,13 +77,15 @@ namespace WebApplication5.Controllers
                 //if (res)
                 //{
                 //    var userFound = newCor.Executor = context.Users.Single(x => x.Id == idnum);
-                //    newCor.Executor = userFound;
+                //    newCor.Executor = userFound
                 //}
-
-
+                var cor = context.Cors.First(x => x.Id == corId);
+                cor.Response = response;
+                cor.Status = Corrections.CorStatus.CorrectedByExecutor;
                 context.ResponseSet.Add(response); //new Corrections(3, new DateTime(2021,6,7), "Everything checked"));
                 context.SaveChanges();
-                return View(@"~/Views/Home/Index", context);
+
+                return RedirectToAction("Index", "Home"); //(@"~/Views/Home/Index.cshtml", context);
             }
             else
             {
@@ -91,6 +95,8 @@ namespace WebApplication5.Controllers
             }
            
         }
+
+        
 
         [HttpPost]
         public ActionResult CreateRemark(Corrections newCor, int? ProjectId)

@@ -1,9 +1,8 @@
-﻿
-@model IQueryable<Corrections>
+﻿@model List<Corrections>
 @{
 
- 
-      Project project = ViewData["Project"] as Project;
+    
+    Project project = ViewData["Project"] as Project;
     ViewData["Title"] = "2602-3 \"Завод масел\"";
     DateTime newDate = DateTime.Now.Date;
 
@@ -60,10 +59,10 @@
             </td>
             @{
                 string executor;
-                if (cor.Executor != null) executor = cor.Executor.LastName; else executor = string.Empty;
+                if (cor.Executor != null) executor = cor.Executor.FullName; else executor = string.Empty;
             }
             <td>
-                @executor;
+                @executor
                 </td >
                 </tr >
             }

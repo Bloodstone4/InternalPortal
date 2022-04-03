@@ -93,7 +93,7 @@ namespace WebApplication5.Controllers
             var listStat = GetStatuses();
             SelectList selectListItems = new SelectList(listStat, "Id", "StatusName", listStat[1]);
             ViewBag.Statuses = selectListItems;
-            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x=>x.IsDeleted==false).Where(x => x.ShowInMenuBar == true);
             ViewData["Context"] = context;
             var projectSet= context.ProjectSet.Where(x=>x.IsDeleted==false).Include(x=>x.Manager).ToList();
             return View(projectSet);
