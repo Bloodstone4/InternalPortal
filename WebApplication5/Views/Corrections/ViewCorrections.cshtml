@@ -55,12 +55,28 @@
 
             </td>
             <td>
-                <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Ответить на замечание</a>
+                @{
+                    switch (cor.Status)
+                    {
+                        case Corrections.CorStatus.New:
+                            <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Ответить на замечание</a>
+                            break;
+                        case Corrections.CorStatus.CorrectedByExecutor:
+                            <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Согласовать ответ исполнителя</a>
+                            break;
+                        case Corrections.CorStatus.CheckedByBim:
+            <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Согласовать ответ отдела</a>
+                                break;
+
+
+                        }
+                    }
+
             </td>
             @{
-                string executor;
-                if (cor.Executor != null) executor = cor.Executor.FullName; else executor = string.Empty;
-            }
+                            string executor;
+                            if (cor.Executor != null) executor = cor.Executor.FullName; else executor = string.Empty;
+                        }
             <td>
                 @executor
                 </td >
@@ -80,8 +96,8 @@
     <script language="JavaScript">
         var bigsize = "300"; //Размер большой картинки
         var smallsize = "150"; //Размер маленькой картинки
-        function changeSizeImage(im) {
-              if(im.height == bigsize) im.height = smallsize;
-        else im.height = bigsize;
-}
+                    function changeSizeImage(im) {
+                        if(im.height == bigsize) im.height = smallsize;
+                        else im.height = bigsize;
+                    }
 </script>

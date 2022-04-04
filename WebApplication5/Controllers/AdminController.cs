@@ -146,7 +146,7 @@ namespace WebApplication5.Controllers
                 project.Manager = user;
                 context.ProjectSet.Add(project);
                 context.SaveChanges();
-                return View(@"~/Views/Home/Index.cshtml", context);
+                return RedirectToAction("Index", "Home");//(@"~/Views/Home/Index.cshtml", context);
             }
             else
             {
