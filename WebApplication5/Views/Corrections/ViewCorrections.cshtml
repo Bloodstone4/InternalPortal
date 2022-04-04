@@ -62,15 +62,17 @@
                             <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Ответить на замечание</a>
                             break;
                         case Corrections.CorStatus.CorrectedByExecutor:
-                            <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Согласовать ответ исполнителя</a>
+                            <a asp-action="ApproveCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Согласовать ответ исполнителя</a>
                             break;
                         case Corrections.CorStatus.CheckedByBim:
-            <a asp-action="CompleteCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Согласовать ответ отдела</a>
-                                break;
+                            <a asp-action="BimApproveCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Согласовать ответ отдела</a>
+                            break;
+                        case Corrections.CorStatus.Done:
+                            <a asp-action="ReopenCor" asp-controller="Corrections" asp-route-Id="@cor.Id">Повторно открыть замечание</a>
+                            break;
 
-
-                        }
                     }
+                }
 
             </td>
             @{

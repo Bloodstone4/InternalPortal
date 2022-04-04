@@ -138,7 +138,67 @@ namespace WebApplication5.Controllers
 
         }
 
-       
+        public ViewResult ApproveCor(int? Id)
+        {
+            var corSet = context.Cors.Include(x => x.Response);
+            var cor = corSet.First(x => x.Id == Id);            
+            ViewData["Corrections"] = cor;
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
+            return View(cor.Response);
+        }
+
+        [HttpPost]
+        public ActionResult ApproveCorPost(int? Id)
+        {
+            var cor = context.Cors.Include(x=>x.Project).First(x => x.Id == Id);
+            cor.Status = Corrections.CorStatus.CheckedByBim;
+            context.SaveChanges();
+            int? projectId = cor.Project.Id;
+            return RedirectToAction("ViewCorrections","Corrections",  new { Id=projectId }); 
+        }
+
+        public ViewResult BimApproveCor(int? Id)
+        {
+            var corSet = context.Cors.Include(x => x.Response);
+            var cor = corSet.First(x => x.Id == Id);
+            ViewData["Corrections"] = cor;
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
+            return View(cor.Response);
+        }
+
+        
+        [HttpPost]
+        public ActionResult BimApproveCorPost(int? Id)
+        {
+            var cor = context.Cors.Include(x => x.Project).First(x => x.Id == Id);
+            cor.Status = Corrections.CorStatus.Done;
+            context.SaveChanges();
+            int? projectId = cor.Project.Id;
+            return RedirectToAction("ViewCorrections", "Corrections", new { Id = projectId });
+        }
+
+        public ViewResult ReopenCor(int? Id)
+        {
+            var corSet = context.Cors.Include(x => x.Response);
+            var cor = corSet.First(x => x.Id == Id);
+            ViewData["Corrections"] = cor;
+            ViewData["ActiveProjects"] = context.ProjectSet.Where(x => x.ShowInMenuBar == true);
+            return View(cor.Response);
+        }
+
+
+        [HttpPost]
+        public ActionResult ReopenCorPost(int? Id)
+        {
+            var cor = context.Cors.Include(x => x.Project).First(x => x.Id == Id);
+            cor.Status = Corrections.CorStatus.Done;
+            context.SaveChanges();
+            int? projectId = cor.Project.Id;
+            return RedirectToAction("ViewCorrections", "Corrections", new { Id = projectId });
+        }
+
+
+
         public ViewResult CreateCor(int? Id)
         {
             ViewData["Project"]= context.ProjectSet.Where(x => x.Id == Id).First();        

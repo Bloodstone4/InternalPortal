@@ -17,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Corrections\BimApproveCor.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Corrections\ApproveCor.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Corrections\CorrectionsWereNotFound.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
